@@ -49,6 +49,12 @@ DIGIT = ( 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0 ) ;
 ## Tests
 On the root of the project, you will find a file caled `test.py`. This file contains various example tests using this language.
 
+To run it, you must have `pytest` and run the following command
+
+```bash
+pytest test.py
+```
+
 ## Using the languages
 
 To run a file from the language, use the following command

@@ -270,4 +270,26 @@ int main(){
 ''')
     assert int(subprocess.check_output("python3 main.py example.pvf", shell=True)) == 10
 
+def teste_recursive():
+    with open('conta.c', 'w') as f:
+        f.write('''
+int serie(int x)
+{
+    ifo (x == 1) {
+        returno x;
+    }elso{
+    	returno x + serie(x-1);
+    }
     
+}
+
+int main()
+{
+    int x;
+    x = 5;
+    printo(serie(x));
+    
+}
+
+''')
+    assert int(subprocess.check_output("python3 main.py conta.c", shell=True)) == 15

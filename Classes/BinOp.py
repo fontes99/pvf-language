@@ -1,3 +1,4 @@
+from .FuncOp import FuncOp
 from .Node import Node
 from .ConsTable import consTable
 
@@ -5,7 +6,7 @@ class BinOp(Node):
 
     def evaluate(self):
 
-        if self.value != 'atrib' and self.value != 'while':
+        if self.value != 'atrib' and self.value != 'while' and type(self.children[1]) != FuncOp and type(self.children[0]) != FuncOp:
             if (type(self.children[0].evaluate()) == str and type(self.children[1].evaluate()) != str) or (type(self.children[0].evaluate()) != str and type(self.children[1].evaluate()) == str) : raise ValueError(f"Invalid operation between {type(self.children[0].evaluate())} and {type(self.children[1].evaluate())}")
 
         if self.value == 'SUM':
