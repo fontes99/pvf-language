@@ -1,5 +1,15 @@
-{
-    bool x;
-    x = 1 > 0;
-    printo(x);
+
+
+int sum(int x, int y) {
+    returno x + y;
 }
+
+
+int main(){
+    int y;
+    y = sum(3, 7);
+    printo(y);
+}
+
+
+

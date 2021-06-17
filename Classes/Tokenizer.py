@@ -8,7 +8,7 @@ class Tokenizer:
         self.actual = actual
         self.balance_paren = 0
         self.balance_brace = 0
-        self.builtIns = ["printo", "readln", "ifo", "whilo", "elso"]
+        self.builtIns = ["printo", "reado", "ifo", "whilo", "elso", "returno"]
         self.types = ["int", "bool", "string"]
         self.tokenPosition = 0
 
@@ -21,14 +21,18 @@ class Tokenizer:
 
         char = lambda : self.origin[self.position]
 
-        while self.position < len(self.origin) and (char() == ' ' or char() == '\n'):
+        while self.position < len(self.origin) and (char() == ' ' or char() == '\n' or char() == '\t'):
             next_()
 
         if self.position == len(self.origin):
             self.actual = Token('EOF', '"')
-            if self.balance_paren != 0: raise ValueError("parenteses desbalanceados")
-            if self.balance_brace != 0: raise ValueError("chaves desbalanceadas")
+            if self.balance_paren != 0: raise ValueError("Error in balancing '(' and ')'")
+            if self.balance_brace != 0: raise ValueError("Error in balancing '{' and '}'")
             return
+
+        elif char() == ',':
+            self.actual = Token('SEP', char())
+            next_()
 
         elif char() == '/':
             self.actual = Token('DIV', char())
@@ -94,7 +98,7 @@ class Tokenizer:
             next_()
 
             if self.balance_brace < 0:
-                raise ValueError
+                raise ValueError("Error in balancing '{' and '}'")
 
         elif char().isalpha():
             name = char()
@@ -106,6 +110,10 @@ class Tokenizer:
             if name in self.builtIns: self.actual = Token('builtin', name)
             
             elif name in self.types: self.actual = Token('TYP', name)
+
+            elif name == "true": self.actual = Token('BOOL', 1)
+
+            elif name == "false": self.actual = Token('BOOL', 0)
 
             else : self.actual = Token('cons', name)
 
@@ -120,12 +128,13 @@ class Tokenizer:
         elif char() == ";":
             
             if self.balance_paren != 0:
-                raise ValueError("parenteses desbalanceados na linha")
+                raise ValueError("Error in balancing '(' and ')'")
             
             self.actual = Token('end_line', ";")
             next_()
 
         elif char() == '"':
+            next_()
             string = char()
             next_()
 
@@ -133,12 +142,11 @@ class Tokenizer:
                 string += char()
                 next_()
 
-            string += char()
             self.actual = Token("STR", string)
             next_()
 
         else: 
-            if self.position > 0 and self.actual.tipo == 'INT': raise ValueError("Dois ints seguidos")
+            if self.position > 0 and self.actual.tipo == 'INT': raise ValueError("Can't have two INTs in a row")
 
             val = ""
 

@@ -4,4 +4,5 @@ from .ConsTable import consTable
 class VarOp(Node):
 
     def evaluate(self):
-        return consTable.getConsValue(self.value)
+        if self.value == 'constant':
+            return consTable.getConsValue(self.children[0], self.func)
